@@ -10,21 +10,34 @@ from sklearn.metrics import r2_score
 import pickle
 
 # Example usage
-df_train, df_validation = load_data('housing_price_prediction/train.csv', 'housing_price_prediction/validation.csv')
 
-df_train = label_encoder(df_train)
-df_validation = label_encoder(df_validation)
+def main():
+    # Load train, validation data as dataframes
+    df_train = load_data('housing_price_prediction/train.csv')
+    df_test = load_data('housing_price_prediction/housing-test-set.csv')
 
-X_train, y_train, X_valid, y_valid = split_data(df_train, df_validation)
+    # Encode categorical features
+    df_train = label_encoder(df_train)
+    df_test = label_encoder(df_test)
 
-# Drop the hotwaterheating feature from validation
-X_valid = X_valid.drop('hotwaterheating', axis = 1)
+    # Split into input features(X) and target features(y)
+    X_train, y_train = split_data(df_train)
+    X_test, y_test = split_data(df_test)
 
-model = load_pickle('Saved_Models/rf_model.pkl')
+    # Drop the hotwaterheating feature from validation
+    X_test = X_test.drop('hotwaterheating', axis = 1)
 
-y_pred = prediction_generation(model, X_valid)
+    # Load the trained model
+    model = load_pickle('Saved_Models/rf_model_66.pkl')
 
-metrics = evaluate_predictions(y_valid, y_pred)
+    ''' Generate predictions based on the trained model '''
+    y_pred = prediction_generation(model, X_test)
 
-for metric, value in metrics.items():
-    print(f"{metric}: {value:.4f}")
+    ''' Evaluate the predictions '''
+    metrics = evaluate_predictions(y_test, y_pred)
+
+    for metric, value in metrics.items():
+        print(f"{metric}: {value:.4f}")
+
+if __name__ == '__main__':
+    main()

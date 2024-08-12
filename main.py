@@ -10,15 +10,14 @@ from sklearn.metrics import r2_score
 import pickle
 
 """ 
-    Returns dataframes for train and validation when proper path is provided
-    Parameters - Path to train data and validation data 
-    Example - df_train, df_validation = load_data('housing_price_prediction/df_train.csv', 'housing_price_prediction/df_validation.csv')
+    Returns dataframes for train, validation, test when proper path is provided
+    Parameters - Path to any data (train, validation, test) 
+    Example - df_train = load_data('housing_price_prediction/df_train.csv'), df_validation= load_data('housing_price_prediction/df_validation.csv'), df_test = load_data('housing_price_prediction/df_test.csv')
 """
-def load_data(train_path, validation_path):
-    df_train = pd.read_csv(train_path)
-    df_validation = pd.read_csv(validation_path)
+def load_data(path):
+    df = pd.read_csv(path)
 
-    return df_train, df_validation
+    return df
 
 """
     Returns label encoded dataframe
@@ -64,16 +63,13 @@ def heatmap_all(df, data):
 """
     Splits dataframe into input features: X and target features: y
     Parameters - Dataframes
-    Example - X_train, y_train, X_valid, y_valid = split_data(df_train, df_validation)
+    Example - X_train, y_train = split_data(df_train)
 """
-def split_data(df_train, df_validation):
-    X_train = df_train.drop("price", axis = 1)
-    y_train = df_train['price']
+def split_data(df):
+    X = df.drop("price", axis = 1)
+    y = df['price']
 
-    X_valid = df_validation.drop('price', axis =1)
-    y_valid = df_validation['price']
-
-    return X_train, y_train, X_valid, y_valid
+    return X, y
 
 """
     Loads pickle model
@@ -89,9 +85,9 @@ def load_pickle(path):
 """
     Generates predictions
     Parameters - Model
-    Example - y_pred = prediction_generation(model)
+    Example - y_pred = prediction_generation(model, X_test), y_pred = prediction_generation(model, X_valid)
 """
-def prediction_generation(model, X_valid):
-    y_pred = model.predict(X_valid)
+def prediction_generation(model, X):
+    y_pred = model.predict(X)
 
     return y_pred
