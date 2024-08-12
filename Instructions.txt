@@ -1,0 +1,9 @@
+1. Make sure to provide proper path for train and test data at start of script in the run.py file. 
+
+2. Refer to main.py for passing parameters and examples for function calling.
+
+3. Install all necessary libraries that might be required if any errors regarding "No Module Found" arises.
+
+4. Ensure the path to provided pickle file is correct as well.
+
+5. The evaluation.py script is also provided since, I import functions from it to directly check metrics on my run.py script. 
